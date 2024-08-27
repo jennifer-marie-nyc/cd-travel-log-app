@@ -61,7 +61,6 @@ const EditEntry = (props) => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(`Entry data being submitted is ${JSON.stringify(entryData)}`)
         axios.post(`http://localhost:8080/api/entries/${entryId}/edit`, entryData, {
             headers: {
                 'Authorization': `Bearer ${loggedUser.token}`

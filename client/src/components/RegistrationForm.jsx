@@ -27,7 +27,6 @@ const RegistrationForm = () => {
         e.preventDefault();
         axios.post("http://localhost:8080/api/newuser", newUserData)
             .then( res => {
-                console.log(res.data)
                 let newUserId = res.data.user_id
                 // After successful registration, log user in and create token
                 axios.post(`http://localhost:8080/regtoken/${newUserId}`)
@@ -39,7 +38,6 @@ const RegistrationForm = () => {
                         }
                         setLoggedUser(userData)
                         // Save user data to localStorage
-                        console.log("Setting token")
                         localStorage.setItem('loggedUser', JSON.stringify(userData))
                         setNewUserData({
                             "firstName": "",
@@ -50,7 +48,6 @@ const RegistrationForm = () => {
                             "confirmPassword": ""
                         });
                         setErrors({});
-                        console.log("Navigating to dashboard")
                         navigate(`/dashboard/${newUserId}`)
                     })
                     .catch(error => {

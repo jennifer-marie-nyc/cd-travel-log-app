@@ -104,7 +104,8 @@ class User:
             if form_data['password'] != form_data['confirmPassword']:
                 errors.setdefault('password', []).append('Passwords must match')
             # Password must contain at least 8 characters, at least one uppercase letter, one lowercase letter, one number, and one special character
-            PASSWORD_REGEX = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-])[A-Za-z\d@$!%*?&\-_]{8,}$")
+            PASSWORD_REGEX = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};:'\"\\|,.<>/?~`])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};:'\"\\|,.<>/?~`]{8,}$")
+
             if not PASSWORD_REGEX.match(form_data['password']):
                 errors.setdefault('password', []).append('Password must contain minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character')
 

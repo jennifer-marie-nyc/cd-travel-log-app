@@ -41,14 +41,12 @@ const CreateJournalEntry = (props) =>{
         const userId = loggedUser.userId
         const entryData = {...newEntry, "userId": userId, "tripId": tripId
         }
-        // console.log(`Entry data being submitted is ${JSON.stringify(entryData)}`)
         axios.post("http://localhost:8080/api/entries/new", entryData, {
             headers: {
                 'Authorization': `Bearer ${loggedUser.token}`
             }
         })
         .then(res => {
-            console.log(res.data)
             setNewEntry({
                 "userId": "",
                 "tripId": "",
@@ -57,7 +55,6 @@ const CreateJournalEntry = (props) =>{
             navigate(`/trips/${tripId}`)
         })
         .catch(err => {
-            // setErrors(err.response.data.errors)
             console.log(err)
         })
     }

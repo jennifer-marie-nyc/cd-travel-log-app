@@ -24,7 +24,6 @@ const CreateTrip = () => {
             .then((res) => {
                 if (res.data.length > 0) {
                     setAllDestinations(res.data)
-                    console.log(`Length is ${res.data.length}`)
                     // Set default value for first destination
                     setNewTripData(prev => ({...prev, destinationID: res.data[0].id}))
                     setLoading(false)
