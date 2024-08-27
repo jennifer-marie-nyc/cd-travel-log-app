@@ -15,25 +15,57 @@ const CreateTrip = (props) => {
         "endDate": ""
     });
     const [errors, setErrors] = useState({})
+    const [loading, setLoading] =  useState(true)
 
-    // console.log(`logged user id is ${loggedUser.userId}`)
-    
+    // Get destinations from database
+    // If destinations not yet populated, get them from REST Countries API
+
     useEffect(() => {
         axios.get("http://localhost:8080/api/destinations/all")
             .then((res) => {
-                setAllDestinations(res.data)
-                // Set default value for destination
                 if (res.data.length > 0) {
-                    setNewTripData(prevData => ({
-                        ...prevData,
-                        destinationId: res.data[0].id
-                    }));
+                    setAllDestinations(res.data)
+                    console.log(`Length is ${res.data.length}`)
+                    // Set default value for first destination
+                    setNewTripData(prev => ({...prev, destinationID: res.data[0].id}))
+                    setLoading(false)
+                } else {
+                    console.log("No destinations found")
+                    axios.get("http://localhost:8080/api/destinations/populate_all")
+                    // Set allDestinations after populating
+                        .then((res) => {
+                            setAllDestinations(res.data)
+                            if (res.data.length > 0) {
+                            setNewTripData(prev => ({ ...prev, destinationId: res.data[0].id }))
+                            setLoading(false)
+                    }
+                        })
                 }
+                
             })
             .catch((err) => {
                 console.log(err)
+                setLoading(false)
             })
     }, []);
+
+    
+    // useEffect(() => {
+    //     axios.get("http://localhost:8080/api/destinations/all")
+    //         .then((res) => {
+    //             setAllDestinations(res.data)
+    //             // Set default value for destination
+    //             if (res.data.length > 0) {
+    //                 setNewTripData(prevData => ({
+    //                     ...prevData,
+    //                     destinationId: res.data[0].id
+    //                 }));
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.log(err)
+    //         })
+    // }, []);
 
     const navigate = useNavigate();
 
@@ -73,6 +105,10 @@ const CreateTrip = (props) => {
                 }
             } )
 
+    }
+
+    if (loading) {
+        return <div>Loading destinations...</div>
     }
 
     return (
