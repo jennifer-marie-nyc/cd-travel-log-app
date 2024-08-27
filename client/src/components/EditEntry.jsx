@@ -68,7 +68,6 @@ const EditEntry = (props) => {
             }
         })
             .then(res => {
-                console.log(res.data)
                 setEntryData({
                     "content": ""
                 })

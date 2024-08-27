@@ -61,21 +61,19 @@ const EditTrip = () => {
     const handleSubmit = e => {
         e.preventDefault();
 
-        console.log(`Trip data being submitted is ${tripData}`)
         axios.post(`http://localhost:8080/api/trips/submit_edit/${tripId}`, tripData, {
             headers: {
                 'Authorization': `Bearer ${loggedUser.token}`
             }
         })
             .then(res => {
-                console.log(res.data)
                 setTripData({
                     "userId": "",
                     "destinationId": "",
                     "startDate": "",
                     "endDate": ""
                 })
-                navigate(`/trips/${tripId}`)
+                navigate(`/dashboard/${loggedUser.userId}`)
             })
             .catch( error => {
                 if (error) {

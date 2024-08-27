@@ -3,9 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { LoggedInUserContext } from "../App";
 
-const CreateTrip = (props) => {
+const CreateTrip = () => {
     const { loggedUser } = useContext(LoggedInUserContext)
-    const { updateSelectedTripData } = props
     const { tripId } = useParams()
     const [allDestinations, setAllDestinations] = useState([])
     const [newTripData, setNewTripData] = useState({
@@ -49,23 +48,6 @@ const CreateTrip = (props) => {
             })
     }, []);
 
-    
-    // useEffect(() => {
-    //     axios.get("http://localhost:8080/api/destinations/all")
-    //         .then((res) => {
-    //             setAllDestinations(res.data)
-    //             // Set default value for destination
-    //             if (res.data.length > 0) {
-    //                 setNewTripData(prevData => ({
-    //                     ...prevData,
-    //                     destinationId: res.data[0].id
-    //                 }));
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             console.log(err)
-    //         })
-    // }, []);
 
     const navigate = useNavigate();
 
@@ -82,14 +64,12 @@ const CreateTrip = (props) => {
         const userId = loggedUser.userId
         const tripData = { ...newTripData, userId }
 
-        // console.log(`Trip data being submitted is ${tripData}`)
         axios.post("http://localhost:8080/api/trips/new", tripData, {
             headers: {
                 'Authorization': `Bearer ${loggedUser.token}`
             }
         })
             .then(res => {
-                // console.log(res.data)
                 const tripId = res.data.trip_id
                 setNewTripData({
                     "userId": "",
@@ -97,7 +77,7 @@ const CreateTrip = (props) => {
                     "startDate": "",
                     "endDate": ""
                 })
-                navigate(`/trips/${tripId}`)
+                navigate(`/dashboard/${loggedUser.userId}`)
             })
             .catch( error => {
                 if (error) {
